@@ -113,13 +113,27 @@ table border:"1", {
     }
     for ( issue in issueSet ) {
         tr {
+            //
+            // Link to issue detail
+            //
             td {
                 a 'href':"#ISSUE-${issue.id}", "ISSUE-${issue.id}"
             }
+
+            //
+            // Issue title
+            //
             td "${issue.title}"
+
+            //
+            // Issue creation date
+            //
             td "${issue.created}"
         
         
+            //
+            // Get the date of the last email
+            //
             def lastUpdate = "N/A"
             def hov = ""
             for ( email in issue.emails.email ) {
@@ -133,18 +147,19 @@ table border:"1", {
                 }
             }
             td 'title':"${hov}", "${lastUpdate}"
-
-                def z = issue.notes.note.size()
-
-                def result = "NA"
-                if (z >= 1) {
-                    z = z-1
-                    if (issue.notes.note.getAt(z).description.toString().startsWith("RESULT=") ) {
-                        result = "${issue.notes.note.getAt(z).description.toString().substring(7)}"
-                    }
-                  
+            
+            //
+            // Get the disposition of the comment
+            //
+            def c = issue.notes.note.size()
+            def result = "NA"
+            if (c >= 1) { //only process the loop if we have notes
+                c = c-1 // adjust count to be an index num
+                if (issue.notes.note.getAt(c).description.toString().startsWith("RESULT=") ) {
+                    result = "${issue.notes.note.getAt(c).description.toString().substring(7)}"
                 }
-                td 'class':"${result}", "${result}"
+            }
+            td 'class':"${result}", "${result}"
         }
     }
     
