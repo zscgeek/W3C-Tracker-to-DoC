@@ -201,13 +201,14 @@ for ( issue in issueSet ) {
         ul {
             li {
              b "${new java.util.Date(Long.parseLong(note.timestamp.toString()) * 1000).format('yyyy-MM-dd hh:mm')}: "   
-                 // mkp.yield "${note.description}"   
              pre "${note.description}"   
             }
         }
     }
 
     h4 "Related e-mails:"
+    // emails are in reverse order (sigh)
+    // this will reverse them. 
     def stack = new ArrayList()
     for ( email in issue.emails.email ) {
         stack.add(0, email)
