@@ -94,7 +94,7 @@ p {
 
 p {
     mkp.yield 'For background on this work, please see the '
-    a href:"http://www.w3.org/Voice/Activity" "Voice Browser Activity Statement<."
+    a href:"http://www.w3.org/Voice/Activity", "Voice Browser Activity Statement."
 }
 
 
@@ -107,7 +107,6 @@ table border:"1", {
         th "Date Opened"
         th "Last Updated"
         th "Result"
-        th "tracker"
     }
     for ( issue in issueSet ) {
         tr {
@@ -143,11 +142,6 @@ table border:"1", {
                   
                 }
                 td 'class':"${result}", "${result}"
-
-                td {
-                    a 'href':"http://www.w3.org/Voice/Group/track/issues/${issue.id}?changelog", "ISSUE-${issue.id}"
-                }
-
         }
     }
     
