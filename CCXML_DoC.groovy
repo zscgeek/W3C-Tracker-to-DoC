@@ -212,11 +212,17 @@ for ( issue in issueSet ) {
     for ( email in issue.emails.email ) {
         stack.add(0, email)
     }
-    for ( email in stack ) {
-        ul {
-            li {
-                b "${new java.util.Date(Long.parseLong(email.timestamp.toString()) * 1000).format('yyyy-MM-dd hh:mm')}: "   
-                a 'href':"${email.link}", "${email.subject}"
+    ul {    
+        for ( email in stack ) {
+            if (
+                email.subject.toString().toLowerCase().indexOf("disposition of comments") == -1 &&
+                email.subject.toString().indexOf("DoC") == -1 
+               ) 
+             {
+               li {
+                   b "${new java.util.Date(Long.parseLong(email.timestamp.toString()) * 1000).format('yyyy-MM-dd hh:mm')}: "   
+                   a 'href':"${email.link}", "${email.subject}"
+               }
             }
         }
     }
