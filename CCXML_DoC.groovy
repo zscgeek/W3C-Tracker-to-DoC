@@ -28,6 +28,9 @@ head {
     style(type:"text/css", '''  
     .indent {  
         margin: 30px;  
+    }  
+    .indentpre {  
+        margin: 30px;  
         background-color: AliceBlue   
     }  
     
@@ -154,10 +157,11 @@ table border:"1", {
 h2 "Issue detail"
 for ( issue in issueSet ) {
     hr {}
-    h3 'id':"ISSUE-${issue.id}",{
-            a 'href':"http://www.w3.org/Voice/Group/track/issues/${issue.id}?changelog", "ISSUE-${issue.id}"
-            mkp.yield " - ${issue.title}"
-    }
+    h3 'id':"ISSUE-${issue.id}", "ISSUE-${issue.id} - ${issue.title}"
+
+    h4 "Tracker (W3C Member only):"
+    a class:'indent','href':"http://www.w3.org/Voice/Group/track/issues/${issue.id}?changelog", "ISSUE-${issue.id}"
+
     h4 "Opened: ${issue.created}"
 
     def lastUpdate = "N/A"
@@ -167,8 +171,9 @@ for ( issue in issueSet ) {
     h4 "Last Updated: ${lastUpdate}"
     
     h4 "State: ${issue.state}"
+
     h4 "Description:"
-    pre 'class':'indent', "${issue.description}"
+    pre 'class':'indentpre', "${issue.description}"
 
     h4 "Notes:"
     for ( note in issue.notes.note ) {
