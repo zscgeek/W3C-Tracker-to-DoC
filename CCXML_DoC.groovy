@@ -109,7 +109,8 @@ table border:"1", {
         th "Title"
         th "Date Opened"
         th "Last Updated"
-        th "Result"
+        th "Disposition"
+        th "Acceptance"
     }
     for ( issue in issueSet ) {
         tr {
@@ -149,17 +150,22 @@ table border:"1", {
             td 'title':"${hov}", "${lastUpdate}"
             
             //
-            // Get the disposition of the comment
+            // Get the disposition and acceptance type of the comment
             //
             def c = issue.notes.note.size()
             def result = "NA"
+            def acceptance = "NA"
             if (c >= 1) { //only process the loop if we have notes
                 c = c-1 // adjust count to be an index num
                 if (issue.notes.note.getAt(c).description.toString().startsWith("RESULT=") ) {
                     result = "${issue.notes.note.getAt(c).description.toString().substring(7)}"
                 }
+                if (issue.notes.note.getAt(c).description.toString().startsWith("ACCEPTANCE=") ) {
+                    acceptance = "${issue.notes.note.getAt(c).description.toString().substring(11)}"
+                }
             }
             td 'class':"${result}", "${result}"
+            td 'class':"${acceptance}", "${acceptance}"
         }
     }
     
