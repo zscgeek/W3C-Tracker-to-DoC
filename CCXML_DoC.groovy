@@ -20,8 +20,11 @@ StringWriter writer = new java.io.StringWriter()
 def build = new groovy.xml.MarkupBuilder(writer)
 build.html {
 head {
-title 'CCXML Disposition of Comments'
+    
+    
+    title "CCXML 1.0: Candidate Recommendation Disposition of Comments"
 
+    link( rel:"stylesheet", type:"text/css",href:"http://www.w3.org/StyleSheets/general.css")
     style(type:"text/css", '''  
     .indent {  
         margin: 30px;  
@@ -50,40 +53,53 @@ title 'CCXML Disposition of Comments'
 }
 body(bgcolor: '#ffffff') {
 
-h1 'CCXML Disposition of comments'
-p "Generated: ${today} by DoC Bot v0.1 - RJ Auburn"
-
-// 
-// Dump some basic stats 
-// 
-h1 "CCXML Tracker stats"
-table border:"1", { 
-    tr {
-        td "Issue database size:"
-        td "${allIssues.size()}"
+div class:"head", {
+    p {
+        a href:"http://www.w3.org" {
+            img width:"72", height:"48", alt:"W3C", src:"http://www.w3.org/Icons/w3c_home"
+        }
+        a href:"",""
     }
-    tr {
-        td "CCXML issue count:"
-        td "${ccxmlIssues.size()}"
+    
+    h1 id:"title", style:"text-align: center", 'CCXML 1.0:Candidate Recommendation Disposition of Comments'
+    
+    dl {
+        dt "This version"
+        dd "${today}"
+        dt "Editor"
+        dd "RJ Auburn, Voxeo"
     }
-    tr {
-        td "Public CCXML issue count: "
-        td "${publicIssues.size()}"
-    }
-    tr {
-        td "LCWD CCXML issue count:"
-        td "${lcwdIssues.size()}"
-    }
-    tr {
-        td "LCWD or PUB CCXML issue count:"
-        td "${pubOrlcwdIssues.size()}"
-    }
+    
 }
 
-// 
-// Create the  top level issue table. 
-// 
-h1 "Comment summery"
+h2 "Abstract"
+p {
+    mkp.yield 'This document details the responses made by the Voice Browser '
+    mkp.yield 'Working Group to issues raised during the '
+    a href:"http://www.w3.org/2004/02/Process-20040205/tr.html#cfi","Candidate Recommendation"
+    mkp.yield ' period (beginning XXX and ending XXX).'
+    a href:"mailto:www-voice-request@w3.org","www-voice-request@w3.org"
+    mkp.yield "("
+    a href:"http://lists.w3.org/Archives/Public/www-voice/", "archive"
+    mkp.yield ") mailing list."
+}
+
+h2 "Status"
+p {
+    mkp.yield 'This document of the W3C\'s Voice Browser Working Group describes the disposition '
+    mkp.yield 'of comments as of XXXX on the '
+    a href:"http://www.w3.org/TR/2007/WD-ccxml-20070119//", "Last Call Working Draft Voice Browser Call Control XML (CCXML) Version 1.0."
+    mkp.yield 'It may be updated, replaced or rendered obsolete by other W3C documents at any time.'    
+}
+
+p {
+    mkp.yield 'For background on this work, please see the '
+    a href:"http://www.w3.org/Voice/Activity" "Voice Browser Activity Statement<."
+}
+
+
+
+h2 "Comment summary"
 table border:"1", { 
     tr {
         th "ID"
@@ -132,8 +148,6 @@ table border:"1", {
                     a 'href':"http://www.w3.org/Voice/Group/track/issues/${issue.id}?changelog", "ISSUE-${issue.id}"
                 }
 
-                
-            
         }
     }
     
@@ -143,26 +157,26 @@ table border:"1", {
 // Dump local info about each issue. 
 // 
 
-h1 "Issue detail"
+h2 "Issue detail"
 for ( issue in issueSet ) {
     hr {}
-    h2 'id':"ISSUE-${issue.id}",{
+    h3 'id':"ISSUE-${issue.id}",{
             a 'href':"http://www.w3.org/Voice/Group/track/issues/${issue.id}?changelog", "ISSUE-${issue.id}"
             mkp.yield " - ${issue.title}"
     }
-    h3 "Opened: ${issue.created}"
+    h4 "Opened: ${issue.created}"
 
     def lastUpdate = "N/A"
     for ( note in issue.notes.note ) {
      lastUpdate =  "${new java.util.Date(Long.parseLong(note.timestamp.toString()) * 1000).format('yyyy-MM-dd hh:mm')}"   
     }
-    h3 "Last Updated: ${lastUpdate}"
+    h4 "Last Updated: ${lastUpdate}"
     
-    h3 "State: ${issue.state}"
-    h3 "Description:"
+    h4 "State: ${issue.state}"
+    h4 "Description:"
     pre 'class':'indent', "${issue.description}"
 
-    h3 "Notes:"
+    h4 "Notes:"
     for ( note in issue.notes.note ) {
         ul {
             li {
@@ -173,7 +187,7 @@ for ( issue in issueSet ) {
         }
     }
 
-    h3 "Related e-mails:"
+    h4 "Related e-mails:"
     def stack = new ArrayList()
     for ( email in issue.emails.email ) {
         stack.add(0, email)
