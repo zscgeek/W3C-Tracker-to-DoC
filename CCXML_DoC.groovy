@@ -22,7 +22,7 @@ build.html {
 head {
     
     
-    title "CCXML 1.0: Candidate Recommendation Disposition of Comments"
+    title "CCXML 1.0: Last Call Working Draft Disposition of Comments"
 
     link( rel:"stylesheet", type:"text/css",href:"http://www.w3.org/StyleSheets/general.css")
     style(type:"text/css", '''  
@@ -64,7 +64,7 @@ div class:"head", {
         a href:"",""
     }
     
-    h1 id:"title", style:"text-align: center", 'CCXML 1.0:Candidate Recommendation Disposition of Comments'
+    h1 id:"title", style:"text-align: center", 'CCXML 1.0: Last Call Working Draft Disposition of Comments'
     
     dl {
         dt "This version"
@@ -79,7 +79,7 @@ h2 "Abstract"
 p {
     mkp.yield 'This document details the responses made by the Voice Browser '
     mkp.yield 'Working Group to issues raised during the '
-    a href:"http://www.w3.org/2004/02/Process-20040205/tr.html#cfi","Candidate Recommendation"
+    a href:"http://www.w3.org/2004/02/Process-20040205/tr.html#cfi","Last Call Working Draft"
     mkp.yield ' period (beginning XXX and ending XXX).'
     a href:"mailto:www-voice-request@w3.org","www-voice-request@w3.org"
     mkp.yield "("
