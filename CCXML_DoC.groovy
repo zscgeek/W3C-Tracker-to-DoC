@@ -1,5 +1,35 @@
 
 
+import groovyx.net.http.HTTPBuilder
+import static groovyx.net.http.Method.HEAD
+import static groovyx.net.http.ContentType.TEXT
+
+
+def checkPublic(url){
+    // create a new builder
+    def http = new HTTPBuilder( url )
+
+    http.request( HEAD, TEXT ) {req ->
+     response.success = { resp ->
+         def loc = resp.getFirstHeader('Location')
+         if (loc != null && loc != "") {
+             if (loc.toString().indexOf("Archives/Member") == -1) 
+             {
+                 return true
+             } else {
+                 return false
+             }
+         } else {
+             return true
+         }
+     }
+     response.failure = { resp ->
+         return false
+     }
+    }
+}
+
+
 def today= new Date() //represents the date and time when it is created
 
 
@@ -20,6 +50,7 @@ StringWriter writer = new java.io.StringWriter()
 def build = new groovy.xml.MarkupBuilder(writer)
 build.html {
 head {
+    
     
     
     title "CCXML 1.0: Last Call Working Draft Disposition of Comments"
@@ -55,7 +86,7 @@ head {
 
 }
 body(bgcolor: '#ffffff') {
-
+    
 div class:"head", {
     p {
         a href:"http://www.w3.org" {
@@ -222,7 +253,12 @@ for ( issue in issueSet ) {
              {
                li {
                    b "${new java.util.Date(Long.parseLong(email.timestamp.toString()) * 1000).format('yyyy-MM-dd hh:mm')}: "   
-                   a 'href':"${email.link}", "${email.subject}"
+                   if (checkPublic(email.link)) {
+                       a 'href':"${email.link}", "${email.subject}"
+                   } else {
+                       a 'href':"${email.link}", "${email.subject} - [members only]"
+                       
+                   }
                }
             }
         }
