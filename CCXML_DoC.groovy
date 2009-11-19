@@ -6,6 +6,7 @@ import static groovyx.net.http.ContentType.TEXT
 
 
 def checkPublic(url){
+    // return true
     // create a new builder
     def http = new HTTPBuilder( url )
 
@@ -134,6 +135,30 @@ p {
 
 
 h2 "Comment summary"
+p "Legend:" 
+table border:"1", { 
+    tr {
+        td 'class':"ACCEPTED", "ACCEPTED"
+        td 'class':"ACCEPTED", "Comment was accepted"
+    }
+    tr {
+        td 'class':"TEXTSUPERSEDED", "TEXTSUPERSEDED"
+        td 'class':"TEXTSUPERSEDED", "Text that was commented on had already been changed."
+    }
+    tr {
+        td 'class':"CLARIFICATION", "CLARIFICATION"
+        td 'class':"CLARIFICATION", "Comment only required a clarification."
+    }
+    tr {
+        td 'class':"DROPPED", "DROPPED"
+        td 'class':"DROPPED", "Feature in question was removed from the spec."
+    }
+    tr {
+        td 'class':"REASSIGNEDID", "REASSIGNEDID"
+        td 'class':"REASSIGNEDID", "Issue number was changed to a new ID"
+    }
+}
+p "Results:" 
 table border:"1", { 
     tr {
         th "ID"
@@ -142,6 +167,7 @@ table border:"1", {
         th "Last Updated"
         th "Disposition"
         th "Acceptance"
+        th "Related Issues"
     }
     for ( issue in issueSet ) {
         tr {
@@ -186,17 +212,21 @@ table border:"1", {
             def c = issue.notes.note.size()
             def result = "NA"
             def acceptance = "NA"
-            if (c >= 1) { //only process the loop if we have notes
-                c = c-1 // adjust count to be an index num
-                if (issue.notes.note.getAt(c).description.toString().startsWith("RESULT=") ) {
-                    result = "${issue.notes.note.getAt(c).description.toString().substring(7)}"
+            def related = "NONE"
+            for (note in issue.notes.note) {
+                if (note.description.toString().startsWith("RESULT=") ) {
+                    result = "${note.description.toString().substring(7)}"
                 }
-                if (issue.notes.note.getAt(c).description.toString().startsWith("ACCEPTANCE=") ) {
-                    acceptance = "${issue.notes.note.getAt(c).description.toString().substring(11)}"
+                if (note.description.toString().startsWith("ACCEPTANCE=") ) {
+                    acceptance = "${note.description.toString().substring(11)}"
+                }
+                if (note.description.toString().startsWith("RELATED=") ) {
+                    related = "${note.description.toString().substring(8)}"
                 }
             }
             td 'class':"${result}", "${result}"
             td 'class':"${acceptance}", "${acceptance}"
+            td "${related}"
         }
     }
     
